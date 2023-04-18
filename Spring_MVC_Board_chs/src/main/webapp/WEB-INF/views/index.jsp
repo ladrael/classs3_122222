@@ -26,6 +26,7 @@
 		<h3><a href="FreeBoardList.bo2">자유게시판</a></h3>
 		<hr>
 		<h3>테스트에서 수정</h3>
+		<h1>스프링에서 수정</h1>
 	</article>
 </body>
 </html>
