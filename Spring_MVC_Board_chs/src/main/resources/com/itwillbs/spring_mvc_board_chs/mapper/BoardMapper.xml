@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.spring_mvc_board_chs.mapper.BoardMapper">
+ 	<insert id = "insertBoard">
+ 		<selectKey keyProperty="board_num" resultType="int" order="BEFORE">
+ 			SELECT IFNULL(MAX(board_num),0) FROM board
+ 		</selectKey>
+ 		INSERT
+ 			INTO board
+ 			VALUES(
+	 			 	#{board_num} +1		-- 글번호
+				 	,#{board_name}	--	작성자명
+				 	,#{board_subject}	-- 제목
+				 	,#{board_content}	-- 내용
+				 	,#{board_file}	-- 파일명
+				 	,#{board_file_path}
+				 	,#{board_num}+1				-- board_re_ref
+				 	,0				-- board_re_lev
+				 	,0				-- board_re_seq
+				 	,0				-- 조회수
+				 	,now()			-- 작성일
+				)
+ 	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

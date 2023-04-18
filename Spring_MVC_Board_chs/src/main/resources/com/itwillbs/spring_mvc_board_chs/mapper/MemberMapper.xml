@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.spring_mvc_board_chs.mapper.MemberMapper">
+
+	<!-- 회원 가입 - INSERT -->
+	<!-- 회원번호(idx)는 자동 증가이므로 null 전달, 인증상태(auth_status)는 'N' 문자 전달 -->
+	<!-- 이메일(email)은 email1, email2 파라미터를 문자열 결합을 통해 저장 - MySQL 의 CONCAT() 함수 사용 -->
+	<insert id="insertMember">
+		INSERT
+			INTO member
+			VALUES (
+				null,
+				#{name},
+				#{id},
+				#{passwd}, -- 암호문
+<!-- 				#{email}, -->
+				CONCAT(#{email1}, '@', #{email2}), -- email 문자열 결합
+				#{gender},
+				now(),
+				'N'
+			)
+	</insert>
+	<!-- resultType에 MEMVER.VO로도 지정 가능 -->
+	<select id="selectPasswd" resultType="String">
+		SELECT passwd
+			FROM member
+			WHERE id = #{id}
+				
+	</select>
+	<select id="selectMember" resultType="com.itwillbs.spring_mvc_board_chs.vo.MemberVO">
+		SELECT *
+			FROM member
+			WHERE id = #{id}
+	</select>
+	<!-- 추가 변경데이터인 비밀번호는 입력하지 않을 수도 있으니 SQL 구문이 달라져야함
+		MyBatis의 동적 SQL 문법 (기능)을 활용하여 SQL 구문을 다르게 실행할 수 있도록 해야함
+		동적 SQL 기능 중 단일 if 문을 사용하여 실행할 문장을 조건에 따라 실행 여부를 결정 가능
+			<if test="조건식"> true일때 실행할 쿼리 </if>
+			neq
+	 -->
+	<update id="updateMemberInfo" >
+		UPDATE member
+			SET 
+				name = #{member.name}
+				, gender = #{member.gender}
+				, email = CONCAT(#{member.email1},'@',#{member.email2})
+				<if test="newPasswd neq ''">
+				, passwd = #{newPasswd}
+				</if>
+			WHERE
+			 	id = #{member.id}
+	</update>
+	
+	<delete id = "deleteMember">
+			DELETE 
+				FROM member
+				WHERE id = #{id}
+	
+	
+	
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
